@@ -10,7 +10,7 @@ module.exports = {
     let response = "";
 
     if (text === "") {
-      response = "END Your alert request has been received";
+      response = "CON Your alert request has been received";
     }
 
     //send an sms
