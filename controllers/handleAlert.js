@@ -1,34 +1,49 @@
 const AT = require("../configs/africastalking");
 
-module.exports = {
-  handleAlert: (req, res) => {
+const sendSMS = (phoneNumber) => {
+  //send an sms
+  const respondent_phone = "+254768879348";
+  const sms = AT.SMS;
+  sms
+    .send({
+      to: respondent_phone,
+      message: `FGM ALERT from ${phoneNumber}. Please respond to the danger ASAP!!!`,
+    })
+    .then((resp) => {
+      console.log(resp);
+      // res.set("Content-Type: text/plain");
+      // return res.send(response)
+    })
+    .catch((err) => {
+      console.trace({ err });
+      // res.status(500).json(error.message);
+    });
+};
+
+const handleAlert = (req, res) => {
+  try {
     //handle respondind to alert
     const { phoneNumber, serviceCode, text, sessionId } = req.body;
-    console.log(text);
+    console.log("hello");
 
-    const respondent_phone = "+254768793923";
-    let response = "";
+    let response = '';
 
-    if (text === "") {
-      response = "CON Your alert request has been received";
+    if (text == '') {
+      console.log(text);
+      response = `CON Your alert request has been received
+  1. Alert`;
+    } else if (text == "1") {
+      console.log(text);
+      response = `END Your alert request has been received`;
     }
+    sendSMS(phoneNumber)
+    res.set("Content-Type: text/plain");
+    res.send(response);
+  } catch (err) {
+    console.log(err);
+  }
+};
 
-    //send an sms
-    const sms = AT.SMS;
-    sms
-      .send({
-        to: respondent_phone,
-        message: `FGM ALERT from ${phoneNumber}. Please respond to the danger ASAP!!!`,
-      })
-      .then((resp) => {
-        console.log(resp);
-        res.set("Content-Type: text/plain");
-        return res.send(response)
-      })
-      .catch((err) => {
-        console.trace({err})
-        // res.status(500).json(error.message);
-      });
-
-  },
+module.exports = {
+  handleAlert,
 };
