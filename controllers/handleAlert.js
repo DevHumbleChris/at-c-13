@@ -6,7 +6,7 @@ module.exports = {
     const { phoneNumber, serviceCode, text, sessionId } = req.body;
     console.log(text);
 
-    const respondent_phone = "+254708392326";
+    const respondent_phone = "+254768793923";
     let response = "";
 
     if (text === "") {
